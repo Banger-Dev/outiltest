@@ -1,40 +1,32 @@
-import altair as alt
-import numpy as np
-import pandas as pd
-import streamlit as st
+def trier_mots_cles(mots_cles, mots_cles_pertinents):
+    """
+    Filtre les mots clés non pertinents à partir d'une liste de mots clés et d'une thématique.
 
-"""
-# Welcome to Streamlit!
+    Args:
+    - mots_cles: List of str, les mots clés à vérifier.
+    - mots_cles_pertinents: List of str, les mots clés pertinents pour la thématique.
 
-Edit `/streamlit_app.py` to customize this app to your heart's desire :heart:.
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
+    Returns:
+    - List of str, les mots clés pertinents.
+    """
+    # Convertir la liste des mots clés pertinents en ensemble pour une recherche rapide
+    mots_cles_pertinents_set = set(mots_cles_pertinents)
+    
+    # Filtrer les mots clés pour ne conserver que ceux qui sont pertinents
+    mots_cles_triees = [mot for mot in mots_cles if mot in mots_cles_pertinents_set]
+    
+    return mots_cles_triees
 
-In the meantime, below is an example of what you can do with just a few lines of code:
-"""
+# Exemple d'utilisation
+mots_cles_a_verifier = [
+    "alternateur hydrolienne", "houlomotrice", "cagué definition", "énergie houlomotrice", 
+    "houlomoteur", "centrale pelamis", "colonne d'eau oscillante", "comment mesurer la houle"
+]
 
-num_points = st.slider("Number of points in spiral", 1, 10000, 1100)
-num_turns = st.slider("Number of turns in spiral", 1, 300, 31)
+mots_cles_pertinents = [
+    "houlomotrice", "énergie houlomotrice", "houlomoteur", "centrale pelamis",
+    "colonne d'eau oscillante", "déferlement", "houle", "vague", "électricité"
+]
 
-indices = np.linspace(0, 1, num_points)
-theta = 2 * np.pi * num_turns * indices
-radius = indices
-
-x = radius * np.cos(theta)
-y = radius * np.sin(theta)
-
-df = pd.DataFrame({
-    "x": x,
-    "y": y,
-    "idx": indices,
-    "rand": np.random.randn(num_points),
-})
-
-st.altair_chart(alt.Chart(df, height=700, width=700)
-    .mark_point(filled=True)
-    .encode(
-        x=alt.X("x", axis=None),
-        y=alt.Y("y", axis=None),
-        color=alt.Color("idx", legend=None, scale=alt.Scale()),
-        size=alt.Size("rand", legend=None, scale=alt.Scale(range=[1, 150])),
-    ))
+mots_cles_filtrees = trier_mots_cles(mots_cles_a_verifier, mots_cles_pertinents)
+print("Mots clés filtrés : ", mots_cles_filtrees)
